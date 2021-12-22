@@ -1,22 +1,23 @@
 <template>
   <div>
-    <v-card v-for="(item, index) in list" :key="index" class="mt-5">
+    <v-card v-for="(item, index) in list" :key="index" class="card mt-5">
       <v-card-title v-text="item.title" />
       <v-card-subtitle>
         <span class="success--text text-subtitle-1">
           <v-icon color="success">mdi-timer</v-icon>
           Opened Now
         </span>
-        <span class="ml-2 text-subtitle-1">1:00 pm - 23:00 am</span>
+        <span class="work-time ml-2 text-subtitle-1">23:00 pm - 23:00 am</span>
         <div
           style="
             display: grid;
             grid-template-columns: auto 1fr;
-            grid-gap: 20px;
+            grid-gap: 10px;
             align-items: center;
           "
         >
           <v-rating
+            class="rating"
             empty-icon="mdi-star-outline"
             full-icon="mdi-star"
             half-icon="mdi-star-half-full"
@@ -25,10 +26,10 @@
             size="30"
             :value="item.stars"
           ></v-rating>
-          <span class="text-h6" v-text="item.gradeCount" />
+          <span class="text-h6 rate-count" v-text="item.gradeCount" />
         </div>
       </v-card-subtitle>
-      <v-card-text class="text-subtitle-2"
+      <v-card-text class="text-subtitle-1"
         >The v-card component is a versatile component that can be used for
         anything from a panel to a static image. The card component has numerous
         helper components to make markup as easy as possible. Components that
@@ -36,16 +37,14 @@
         rendering and serve as markup sugar to make building easier. Try out an
         interactive screencast on how</v-card-text
       >
+      <div class="tags">
+        <v-icon>mdi-heart</v-icon>
+        <v-icon>mdi-home</v-icon>
+      </div>
       <v-card-actions>
-        <v-btn>
+        <v-btn block>
           <v-icon>mdi-map-marker</v-icon>
           show on map
-        </v-btn>
-        <v-btn disabled>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn disabled>
-          <v-icon>mdi-home</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -92,4 +91,28 @@ export default {
   },
 }
 </script>
-<style></style>
+
+<style lang="scss">
+.rate-count {
+  padding: 5px;
+  color: var(--v-primary-base);
+}
+.tags {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  i {
+    padding: 0 5px;
+  }
+}
+@media (max-width: $xxs) {
+  .rating {
+    button {
+      padding: 5px !important;
+    }
+  }
+  .work-time {
+    display: block;
+  }
+}
+</style>
