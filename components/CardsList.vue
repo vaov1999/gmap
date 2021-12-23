@@ -1,110 +1,150 @@
 <template>
   <div>
-    <v-card v-for="(item, index) in list" :key="index" class="card mt-5">
-      <v-card-title v-text="item.title" />
-      <v-card-subtitle>
-        <span class="success--text text-subtitle-1">
-          <v-icon color="success">mdi-timer</v-icon>
-          Opened Now
-        </span>
-        <span class="work-time ml-2 text-subtitle-1">23:00 pm - 23:00 am</span>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: auto 1fr;
-            grid-gap: 10px;
-            align-items: center;
-          "
-        >
-          <v-rating
-            class="rating"
-            empty-icon="mdi-star-outline"
-            full-icon="mdi-star"
-            half-icon="mdi-star-half-full"
-            hover
-            length="5"
-            size="30"
-            :value="item.stars"
-          ></v-rating>
-          <span class="text-h6 rate-count" v-text="item.gradeCount" />
-        </div>
-      </v-card-subtitle>
-      <v-card-text class="text-subtitle-1"
-        >The v-card component is a versatile component that can be used for
-        anything from a panel to a static image. The card component has numerous
-        helper components to make markup as easy as possible. Components that
-        have no listed options use Vue’s functional component option for faster
-        rendering and serve as markup sugar to make building easier. Try out an
-        interactive screencast on how</v-card-text
+    <div
+      v-if="!$store.state.organizations.length"
+      class="d-flex justify-center align-center"
+      style="height: 100px"
+    >
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <template v-else>
+      <v-card
+        v-for="(item, index) in $store.state.organizations"
+        :key="index"
+        class="card mt-5"
       >
-      <div class="tags">
-        <v-icon>mdi-heart</v-icon>
-        <v-icon>mdi-home</v-icon>
-      </div>
-      <v-card-actions>
-        <v-btn block>
-          <v-icon>mdi-map-marker</v-icon>
-          show on map
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-card-title v-text="item.business_name" />
+        <v-card-subtitle>
+          <span class="success--text text-subtitle-1">
+            <v-icon color="success">mdi-timer</v-icon>
+            Opened Now
+          </span>
+          <span class="work-time ml-2 text-subtitle-1"
+            >23:00 pm - 23:00 am</span
+          >
+          <div
+            style="
+              display: grid;
+              grid-template-columns: auto 1fr;
+              grid-gap: 10px;
+              align-items: center;
+            "
+          >
+            <v-rating
+              class="rating"
+              empty-icon="mdi-star-outline"
+              full-icon="mdi-star"
+              half-icon="mdi-star-half-full"
+              hover
+              length="5"
+              size="30"
+              :value="0"
+            ></v-rating>
+            <span class="text-h6 rate-count" v-text="item.gradeCount" />
+          </div>
+        </v-card-subtitle>
+        <v-card-text
+          :id="`description-organization-${index}`"
+          class="short-description description text-subtitle-1"
+          v-html="item.short_description"
+        />
+        <div
+          style="display: grid; grid-template-columns: auto 1fr; grid-gap: 20px"
+        >
+          <button
+            class="ml-4 read-more"
+            style="cursor: pointer"
+            @click="
+              toggleDescriptionHeight(
+                `description-organization-${index}`,
+                index
+              )
+            "
+          >
+            Read more
+          </button>
+          <div class="categories">
+            <v-icon
+              v-for="(category, indexCategory) in item.category.category"
+              :key="indexCategory"
+            >
+              {{ defineCategory(category) }}
+            </v-icon>
+            <v-icon>mdi-home</v-icon>
+          </div>
+        </div>
+        <v-card-actions>
+          <v-btn block>
+            <v-icon>mdi-map-marker</v-icon>
+            show on map
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      list: [
-        {
-          title: '24 hour Crisis Line',
-          isOpened: true,
-          stars: 3.2,
-          gradeCount: 3.2,
-          description:
-            'A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is ',
-          lastEdited: '10/30/2021',
-          tags: ['HEALTH'],
-        },
-        {
-          title: 'Abundant Life Preschool',
-          isOpened: false,
-          stars: 5,
-          gradeCount: 5,
-          description:
-            'A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is ',
-          lastEdited: '10/30/2021',
-          tags: ['HEALTH', 'EDUCATION'],
-        },
-        {
-          title: '24 hour Crisis Line Crisis Line',
-          isOpened: true,
-          stars: 3,
-          gradeCount: 3.1,
-          description:
-            'A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is A 24 hr crisis line. If you, or someone you know, is having an urgent mental health situation, there is ',
-          lastEdited: '10/30/2021',
-          tags: ['HEALTH'],
-        },
-      ],
-    }
+    return {}
+  },
+  methods: {
+    defineCategory(categories) {
+      if (categories === 'Health') return 'mdi-heart'
+      if (categories === 'Education') return 'mdi-education'
+      if (categories === 'Other') return 'mdi-heart'
+    },
+    toggleDescriptionHeight(idTitle) {
+      const descriptionElement = document.getElementById(idTitle)
+      if (descriptionElement.classList.contains('short-description')) {
+        descriptionElement.classList.remove('short-description')
+      } else {
+        descriptionElement.classList.add('short-description')
+      }
+    },
   },
 }
 </script>
-
 <style lang="scss">
 .rate-count {
   padding: 5px;
   color: var(--v-primary-base);
 }
-.tags {
+.categories {
   padding: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   i {
     padding: 0 5px;
   }
 }
+.description {
+  p {
+    margin-bottom: 0;
+  }
+}
+.read-more {
+  cursor: pointer;
+  &:hover {
+    color: var(--v-primary-base);
+    text-decoration: underline;
+  }
+}
+.short-description {
+  max-height: 80px;
+  overflow: hidden;
+  p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
 @media (max-width: $xxs) {
   .rating {
     button {

@@ -22,11 +22,6 @@
           src="@/assets/images/logo_without_name.png"
           alt=""
         />
-
-        <!--        <v-btn class="mt-3" large @click="leftDrawer = !leftDrawer">-->
-        <!--          <v-icon left> mdi-menu </v-icon>-->
-        <!--          Close menu-->
-        <!--        </v-btn>-->
         <div
           class="mt-3"
           style="display: grid; grid-template-columns: 1fr auto; grid-gap: 15px"
@@ -98,6 +93,7 @@
             Search for local education organizations
           </v-tooltip>
         </div>
+        <p class="text-subtitle-1 mt-5 mb-0">Business list:</p>
         <CardsList></CardsList>
       </div>
     </v-navigation-drawer>
@@ -203,6 +199,9 @@ export default {
       rightDrawer: true,
       title: 'Flagstaff',
     }
+  },
+  created() {
+    this.$store.dispatch('getOrganizations')
   },
   mounted() {},
 }

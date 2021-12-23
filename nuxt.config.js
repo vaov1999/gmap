@@ -54,12 +54,7 @@ export default {
       light: true,
       options: { customProperties: true },
       themes: {
-        light: {
-          primary: colors.purple,
-          secondary: colors.grey.darken1,
-          accent: colors.shades.black,
-          error: colors.red.accent3,
-        },
+        light: {},
         dark: {
           // primary: colors.blue.darken2,
           // accent: colors.grey.darken3,
