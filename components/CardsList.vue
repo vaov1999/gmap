@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="!$store.state.organizations.length"
+      v-if="!$store.state.organizations"
       class="d-flex justify-center align-center"
       style="height: 100px"
     >
@@ -17,7 +17,11 @@
         :key="index"
         class="card mt-5"
       >
-        <v-card-title v-text="item.business_name" />
+        <v-card-title
+          style="cursor: pointer"
+          @click="() => $store.commit('setActiveOrganization', index)"
+          v-text="item.business_name"
+        />
         <v-card-subtitle>
           <span class="success--text text-subtitle-1">
             <v-icon color="success">mdi-timer</v-icon>
@@ -74,11 +78,10 @@
             >
               {{ defineCategory(category) }}
             </v-icon>
-            <v-icon>mdi-home</v-icon>
           </div>
         </div>
         <v-card-actions>
-          <v-btn block>
+          <v-btn block @click="showOnMap(index)">
             <v-icon>mdi-map-marker</v-icon>
             show on map
           </v-btn>
@@ -94,10 +97,23 @@ export default {
     return {}
   },
   methods: {
-    defineCategory(categories) {
-      if (categories === 'Health') return 'mdi-heart'
-      if (categories === 'Education') return 'mdi-education'
-      if (categories === 'Other') return 'mdi-heart'
+    showOnMap(orgIndex) {
+      const org = this.$store.state.organizations[orgIndex]
+      this.$store.state.googleInstance.then((props) => {
+        const { map } = props
+        map.setZoom(17)
+        map.setCenter({
+          lat: Number(org.address.lat),
+          lng: Number(org.address.lng),
+        })
+      })
+    },
+    defineCategory(category) {
+      const categories = this.$store.state.categoriesOrganization
+
+      for (const key in categories) {
+        if (categories[key].name === category) return categories[key].icon
+      }
     },
     toggleDescriptionHeight(idTitle) {
       const descriptionElement = document.getElementById(idTitle)

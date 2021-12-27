@@ -8,15 +8,27 @@
       class="left-drawer"
       width="450px"
     >
-      <v-btn
-        v-if="leftDrawer"
-        fab
-        class="close-button"
-        @click.stop="leftDrawer = !leftDrawer"
-      >
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <div class="pa-3">
+      <div v-show="activeOrganization" class="pa-3">
+        <v-btn
+          fab
+          class="close-button close-button--active-organization"
+          @click="() => $store.commit('setActiveOrganization', null)"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <h1 v-if="activeOrganization">
+          {{ activeOrganization.business_name }}
+        </h1>
+      </div>
+      <div v-show="!activeOrganization" class="pa-3">
+        <v-btn
+          v-if="leftDrawer"
+          fab
+          class="close-button"
+          @click.stop="leftDrawer = !leftDrawer"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
         <img
           class="left-logo"
           src="@/assets/images/logo_without_name.png"
@@ -56,41 +68,21 @@
         <div
           style="
             display: grid;
-            grid-template-columns: auto auto auto auto;
+            grid-template-columns: auto auto auto auto auto;
             grid-gap: 15px;
           "
         >
-          <v-tooltip bottom>
+          <v-tooltip
+            v-for="(category, index) in categoriesOrganization"
+            :key="index"
+            bottom
+          >
             <template #activator="{ on, attrs }">
               <v-btn v-bind="attrs" class="pa-0" v-on="on">
-                <v-icon color="primary"> mdi-heart </v-icon>
+                <v-icon> {{ category.icon }} </v-icon>
               </v-btn>
             </template>
-            Search for local Health organizations
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-btn v-bind="attrs" class="pa-0" v-on="on">
-                <v-icon> mdi-food </v-icon>
-              </v-btn>
-            </template>
-            Search for local food organizations
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-btn v-bind="attrs" class="pa-0" v-on="on">
-                <v-icon> mdi-home </v-icon>
-              </v-btn>
-            </template>
-            Search for local ???
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-btn v-bind="attrs" class="pa-0" v-on="on">
-                <v-icon> mdi-school </v-icon>
-              </v-btn>
-            </template>
-            Search for local education organizations
+            Search for local {{ category.name }} organizations
           </v-tooltip>
         </div>
         <p class="text-subtitle-1 mt-5 mb-0">Business list:</p>
@@ -98,9 +90,34 @@
       </div>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-btn icon @click="leftDrawer = !leftDrawer">
-        <v-icon>mdi-filter</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            icon
+            @click="leftDrawer = !leftDrawer"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-filter</v-icon>
+          </v-btn>
+        </template>
+        {{ leftDrawer ? 'Hide' : 'Show' }} left filer panel
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            class="pa-0"
+            @click="$store.commit('setAppTheme')"
+            v-on="on"
+          >
+            <v-icon v-show="$vuetify.theme.dark">mdi-lightbulb-off</v-icon>
+            <v-icon v-show="!$vuetify.theme.dark">mdi-lightbulb</v-icon>
+          </v-btn>
+        </template>
+        Toggle app light\dark theme
+      </v-tooltip>
       <!--      <img height="100%" src="@/assets/images/logo_without_name.png" alt="" />-->
       <v-text-field
         append-icon="mdi-magnify"
@@ -141,8 +158,8 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer style="height: 20px" class="pa-1">
-      <span style="font-size: 10px"
+    <v-footer style="height: 20px" class="pa-1 justify-center">
+      <span style="font-size: 10px; text-align: center"
         >Copyright © Flagstaff Resources HUB. All rights reserved.</span
       >
     </v-footer>
@@ -150,12 +167,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'DefaultLayout',
   data() {
     return {
       clipped: false,
-      fixed: false,
+      leftDrawer: true,
+      rightDrawer: true,
       items: [
         {
           icon: 'mdi-home',
@@ -193,17 +213,14 @@ export default {
           to: '/log-in',
         },
       ],
-      leftDrawer: true,
-      rightDrawerMini: true,
-      right: true,
-      rightDrawer: true,
-      title: 'Flagstaff',
     }
+  },
+  computed: {
+    ...mapState(['activeOrganization', 'categoriesOrganization']),
   },
   created() {
     this.$store.dispatch('getOrganizations')
   },
-  mounted() {},
 }
 </script>
 
@@ -219,6 +236,9 @@ export default {
   top: 20px;
   right: 20px;
   z-index: 1000;
+}
+.close-button--active-organization {
+  display: flex;
 }
 .left-drawer {
   width: 450px !important;
