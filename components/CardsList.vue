@@ -18,49 +18,49 @@
         class="card mt-5"
       >
         <v-card-title
-          style="cursor: pointer"
+          style="cursor: pointer; line-height: 1.4rem"
           @click="() => $store.commit('setActiveOrganization', index)"
           v-text="item.business_name"
+          class="text-subtitle-1 font-weight-bold"
         />
-        <v-card-subtitle>
-          <span class="success--text text-subtitle-1">
-            <v-icon color="success">mdi-timer</v-icon>
+        <v-card-subtitle class="pb-0 pt-2">
+          <span class="success--text text-body-2">
+            <v-icon dense color="success">mdi-timer</v-icon>
             Opened Now
           </span>
-          <span class="work-time ml-2 text-subtitle-1"
-            >23:00 pm - 23:00 am</span
-          >
-          <div
-            style="
-              display: grid;
-              grid-template-columns: auto 1fr;
-              grid-gap: 10px;
-              align-items: center;
-            "
-          >
-            <v-rating
-              class="rating"
-              empty-icon="mdi-star-outline"
-              full-icon="mdi-star"
-              half-icon="mdi-star-half-full"
-              hover
-              length="5"
-              size="30"
-              :value="0"
-            ></v-rating>
-            <span class="text-h6 rate-count" v-text="item.gradeCount" />
-          </div>
+          <span class="work-time ml-2 text-body-2">23:00 pm - 23:00 am</span>
         </v-card-subtitle>
+        <div
+          class="pl-1"
+          style="
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-gap: 10px;
+            align-items: center;
+          "
+        >
+          <v-rating
+            class="rating"
+            empty-icon="mdi-star-outline"
+            full-icon="mdi-star"
+            half-icon="mdi-star-half-full"
+            hover
+            length="5"
+            size="25"
+            :value="0"
+          ></v-rating>
+          <span class="text-h6 rate-count" v-text="item.gradeCount" />
+        </div>
         <v-card-text
           :id="`description-organization-${index}`"
-          class="short-description description text-subtitle-1"
           v-html="item.short_description"
+          class="pt-0 short-description description text-body-2 font-weight-light"
         />
         <div
           style="display: grid; grid-template-columns: auto 1fr; grid-gap: 20px"
         >
           <button
-            class="ml-4 read-more"
+            class="ml-4 read-more text-body-2"
             style="cursor: pointer"
             @click="
               toggleDescriptionHeight(
@@ -75,14 +75,15 @@
             <v-icon
               v-for="(category, indexCategory) in item.category.category"
               :key="indexCategory"
+              dense
             >
               {{ defineCategory(category) }}
             </v-icon>
           </div>
         </div>
         <v-card-actions>
-          <v-btn block @click="showOnMap(index)">
-            <v-icon>mdi-map-marker</v-icon>
+          <v-btn block @click="showOnMap(index)" class="text-body-2">
+            <v-icon dense>mdi-map-marker</v-icon>
             show on map
           </v-btn>
         </v-card-actions>
@@ -132,7 +133,7 @@ export default {
   color: var(--v-primary-base);
 }
 .categories {
-  padding: 10px;
+  padding: 5px;
   display: flex;
   justify-content: flex-end;
   i {
@@ -156,7 +157,7 @@ export default {
   overflow: hidden;
   p {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
 }

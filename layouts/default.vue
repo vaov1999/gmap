@@ -2,13 +2,12 @@
   <v-app>
     <v-navigation-drawer
       v-model="leftDrawer"
-      :clipped="clipped"
       fixed
       app
       class="left-drawer"
-      width="450px"
+      width="320px"
     >
-      <div v-show="activeOrganization" class="pa-3">
+      <div v-show="activeOrganization" class="pa-2">
         <v-btn
           fab
           class="close-button close-button--active-organization"
@@ -20,7 +19,7 @@
           {{ activeOrganization.business_name }}
         </h1>
       </div>
-      <div v-show="!activeOrganization" class="pa-3">
+      <div v-show="!activeOrganization" class="pa-2">
         <v-btn
           v-if="leftDrawer"
           fab
@@ -38,13 +37,13 @@
           class="mt-3"
           style="display: grid; grid-template-columns: 1fr auto; grid-gap: 15px"
         >
-          <v-btn block class="gb-button-wrap">
+          <v-btn block class="gb-button-wrap text-caption">
             <v-icon left> mdi-phone </v-icon>
             Need assistance call <br />
             928-832-2324
           </v-btn>
-          <v-btn height="100%">
-            <v-icon> mdi-content-copy </v-icon>
+          <v-btn height="100%" min-width="0">
+            <v-icon dense> mdi-content-copy </v-icon>
           </v-btn>
         </div>
         <div
@@ -55,16 +54,16 @@
           "
           class="mt-3 mb-3"
         >
-          <v-btn height="100%">
-            <v-icon> mdi-filter </v-icon>
+          <v-btn height="100%" class="text-caption">
+            <v-icon left dense> mdi-filter </v-icon>
             Filter
           </v-btn>
-          <v-btn class="gb-button-wrap">
-            <v-icon>mdi-timer</v-icon>
+          <v-btn class="gb-button-wrap text-caption">
+            <v-icon left dense>mdi-timer</v-icon>
             Show visible only
           </v-btn>
         </div>
-        <p class="text-subtitle-1 mt-5 mb-1">Show only:</p>
+        <p class="text-subtitle-2 mt-5 mb-1">Show only:</p>
         <div
           style="
             display: grid;
@@ -78,18 +77,23 @@
             bottom
           >
             <template #activator="{ on, attrs }">
-              <v-btn v-bind="attrs" class="pa-0" v-on="on">
-                <v-icon> {{ category.icon }} </v-icon>
+              <v-btn
+                v-bind="attrs"
+                class="pa-0"
+                v-on="on"
+                style="min-width: 1px"
+              >
+                <v-icon dense> {{ category.icon }} </v-icon>
               </v-btn>
             </template>
             Search for local {{ category.name }} organizations
           </v-tooltip>
         </div>
-        <p class="text-subtitle-1 mt-5 mb-0">Business list:</p>
+        <p class="text-subtitle-2 mt-5 mb-0">Business list:</p>
         <CardsList></CardsList>
       </div>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar fixed app dense>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
           <v-btn
@@ -129,23 +133,18 @@
     <v-main>
       <Nuxt />
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" app right>
+    <v-navigation-drawer v-model="rightDrawer" app right width="150">
       <div class="d-flex justify-center mt-3">
-        <img src="@/assets/images/logo.png" alt="Flagstaff" />
+        <img width="80%" src="@/assets/images/logo.png" alt="Flagstaff" />
       </div>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i">
-          <v-tooltip left>
-            <template #activator="{ on, attrs }">
-              <v-list-item-action v-bind="attrs" v-on="on">
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-action>
-            </template>
-            <span v-text="item.title"></span>
-          </v-tooltip>
+        <v-list-item v-for="(item, i) in items" :key="i" class="pl-2 pr-2">
+          <v-list-item-action class="ml-1 mr-3">
+            <v-icon dense>{{ item.icon }}</v-icon>
+          </v-list-item-action>
 
           <v-list-item-content>
-            <v-list-item-title class="text-subtitle-1" v-text="item.title" />
+            <v-list-item-title class="text-subtitle-2" v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -232,9 +231,7 @@ export default {
 .close-button--active-organization {
   display: flex;
 }
-.left-drawer {
-  width: 450px !important;
-}
+
 @media (max-width: 500px) {
   .left-logo {
     display: block;
