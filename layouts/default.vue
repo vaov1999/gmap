@@ -134,15 +134,7 @@
         <img src="@/assets/images/logo.png" alt="Flagstaff" />
       </div>
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-          link
-          nuxt
-        >
+        <v-list-item v-for="(item, i) in items" :key="i">
           <v-tooltip left>
             <template #activator="{ on, attrs }">
               <v-list-item-action v-bind="attrs" v-on="on">
