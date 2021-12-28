@@ -5,7 +5,8 @@
       fixed
       app
       class="left-drawer"
-      width="320px"
+      width="300"
+      mobile-breakpoint="768"
     >
       <div v-show="activeOrganization" class="pa-2">
         <v-btn
@@ -60,7 +61,7 @@
           </v-btn>
           <v-btn class="gb-button-wrap text-caption">
             <v-icon left dense>mdi-timer</v-icon>
-            Show visible only
+            Show opened only
           </v-btn>
         </div>
         <p class="text-subtitle-2 mt-5 mb-1">Show only:</p>
@@ -138,13 +139,17 @@
         <img width="80%" src="@/assets/images/logo.png" alt="Flagstaff" />
       </div>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" class="pl-2 pr-2">
+        <v-list-item
+          v-for="(route, i) in routesMenu"
+          :key="i"
+          class="pl-2 pr-2"
+        >
           <v-list-item-action class="ml-1 mr-3">
-            <v-icon dense>{{ item.icon }}</v-icon>
+            <v-icon dense>{{ route.icon }}</v-icon>
           </v-list-item-action>
 
           <v-list-item-content>
-            <v-list-item-title class="text-subtitle-2" v-text="item.title" />
+            <v-list-item-title class="text-subtitle-2" v-text="route.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -159,51 +164,16 @@
 
 <script>
 import { mapState } from 'vuex'
+import { routesMenu } from '~/assets/constants.js'
 
 export default {
   name: 'DefaultLayout',
   data() {
     return {
       clipped: false,
-      leftDrawer: true,
-      rightDrawer: true,
-      items: [
-        {
-          icon: 'mdi-home',
-          title: 'Home',
-          to: '/',
-        },
-        {
-          icon: 'mdi-youtube',
-          title: 'Watch Tutorial',
-          to: '/watch-tutorial',
-        },
-        {
-          icon: 'mdi-information-variant',
-          title: 'info',
-          to: '/Legal-disclaimer',
-        },
-        {
-          icon: 'mdi-plus-circle-outline',
-          title: 'listening',
-          to: '/add-a-listing',
-        },
-        {
-          icon: 'mdi-information-outline',
-          title: 'Learn More',
-          to: '/learn-more',
-        },
-        {
-          icon: 'mdi-login-variant',
-          title: 'Sign Up',
-          to: '/sign-up',
-        },
-        {
-          icon: 'mdi-login',
-          title: 'Log In',
-          to: '/log-in',
-        },
-      ],
+      leftDrawer: null,
+      rightDrawer: null,
+      routesMenu,
     }
   },
   computed: {
@@ -232,15 +202,9 @@ export default {
   display: flex;
 }
 
-@media (max-width: 500px) {
-  .left-logo {
-    display: block;
-  }
-  .close-button {
-    display: flex;
-  }
+@media (max-width: 400px) {
   .left-drawer {
-    width: 100% !important;
+    width: 80% !important;
   }
 }
 </style>

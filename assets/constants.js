@@ -102,3 +102,41 @@ export const googleMapThemeLight = [
     stylers: [{ visibility: 'off' }],
   },
 ]
+
+export const routesMenu = [
+  {
+    icon: 'mdi-home',
+    title: 'Home',
+    to: '/',
+  },
+  {
+    icon: 'mdi-youtube',
+    title: 'Watch Tutorial',
+    to: '/watch-tutorial',
+  },
+  {
+    icon: 'mdi-information-variant',
+    title: 'info',
+    to: '/Legal-disclaimer',
+  },
+  {
+    icon: 'mdi-plus-circle-outline',
+    title: 'listening',
+    to: '/add-a-listing',
+  },
+  {
+    icon: 'mdi-information-outline',
+    title: 'Learn More',
+    to: '/learn-more',
+  },
+  {
+    icon: 'mdi-login-variant',
+    title: 'Sign Up',
+    to: '/sign-up',
+  },
+  {
+    icon: 'mdi-login',
+    title: 'Log In',
+    to: '/log-in',
+  },
+]

@@ -23,15 +23,15 @@
           v-text="item.business_name"
           class="text-subtitle-1 font-weight-bold"
         />
-        <v-card-subtitle class="pb-0 pt-2">
-          <span class="success--text text-body-2">
+        <v-card-subtitle class="pb-0">
+          <span class="success--text text-body-2 mr-2 mt-2">
             <v-icon dense color="success">mdi-timer</v-icon>
             Opened Now
           </span>
-          <span class="work-time ml-2 text-body-2">23:00 pm - 23:00 am</span>
+          <span class="work-time text-body-2 pt-2">23:00 pm - 23:00 am</span>
         </v-card-subtitle>
         <div
-          class="pl-1"
+          class="pl-3"
           style="
             display: grid;
             grid-template-columns: auto 1fr;
