@@ -166,9 +166,6 @@ export default {
   computed: {
     ...mapState(['activeOrganization', 'categoriesOrganization']),
   },
-  created() {
-    this.$store.dispatch('getOrganizations')
-  },
   methods: {
     setLeftDrawer(value) {
       if (this.leftDrawer !== value) {

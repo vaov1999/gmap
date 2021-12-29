@@ -26,25 +26,6 @@ export default {
     },
     setOrganizations(state, orgs) {
       state.organizations = orgs
-
-      state.googleInstance.then((props) => {
-        const { google, map } = props
-
-        orgs.forEach((org, index) => {
-          const marker = new google.maps.Marker({
-            position: {
-              lat: Number(org.address.lat),
-              lng: Number(org.address.lng),
-            },
-            map,
-            title: org.business_name,
-          })
-
-          marker.addListener('click', () => {
-            this.commit('setActiveOrganization', index)
-          })
-        })
-      })
     },
     setActiveOrganization(state, organizationId) {
       if (organizationId === null) {
@@ -67,6 +48,23 @@ export default {
           })
           return { google, map }
         })
+        .then((props) => {
+          const { google, map } = props
+          state.organizations.forEach((org, index) => {
+            const marker = new google.maps.Marker({
+              position: {
+                lat: Number(org.address.lat),
+                lng: Number(org.address.lng),
+              },
+              map,
+              title: org.business_name,
+            })
+
+            marker.addListener('click', () => {
+              this.commit('setActiveOrganization', index)
+            })
+          })
+        })
     },
     setAppTheme(state) {
       const theme = globalThis.$nuxt.$root.$vuetify.theme
@@ -88,8 +86,8 @@ export default {
     },
   },
   actions: {
-    getOrganizations({ commit }) {
-      this.$axios
+    async nuxtServerInit({ commit }, { $axios }) {
+      await $axios
         .get('https://flagstaffresources.com/api/business')
         .then((business) => commit('setOrganizations', business.data))
     },
