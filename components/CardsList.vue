@@ -57,8 +57,8 @@
         </div>
         <v-card-text
           :id="`description-organization-${index}`"
-          v-html="item.short_description"
           class="pt-0 short-description description text-body-2 font-weight-light"
+          v-html="item.short_description"
         />
         <div
           style="display: grid; grid-template-columns: auto 1fr; grid-gap: 20px"
@@ -86,9 +86,13 @@
           </div>
         </div>
         <v-card-actions>
-          <v-btn block @click="showOnMap(index)" class="text-body-2">
+          <v-btn class="text-body-2" @click="showOnMap(index)">
             <v-icon dense>mdi-map-marker</v-icon>
-            show on map
+            show
+          </v-btn>
+          <v-btn class="text-body-2" @click="() => openOrganization(index)">
+            <v-icon dense>mdi-open-in-app</v-icon>
+            details
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -102,7 +106,7 @@ export default {
     return {}
   },
   methods: {
-    showOnMap(orgIndex) {
+    focusOnMarker(orgIndex) {
       const org = this.$store.state.organizations[orgIndex]
       this.$store.state.googleInstance.then((props) => {
         const { map } = props
@@ -113,8 +117,14 @@ export default {
         })
       })
     },
+    showOnMap(orgIndex) {
+      if (window.innerWidth <= 768) {
+        this.$store.commit('setLeftDrawer')
+      }
+      this.focusOnMarker(orgIndex)
+    },
     openOrganization(orgIndex) {
-      this.showOnMap(orgIndex)
+      this.focusOnMarker(orgIndex)
       this.$store.commit('setActiveOrganization', orgIndex)
     },
     defineCategory(category) {

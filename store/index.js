@@ -11,13 +11,19 @@ export default {
     activeOrganization: null,
     googleInstance: null,
     categoriesOrganization,
-    googleMapThemeDark,
-    googleMapThemeLight,
     filter: {
       categories: [],
     },
+    interface: {
+      leftDrawer: null,
+      googleMapThemeDark,
+      googleMapThemeLight,
+    },
   }),
   mutations: {
+    setLeftDrawer(state) {
+      state.interface.leftDrawer = !state.interface.leftDrawer
+    },
     setOrganizations(state, orgs) {
       state.organizations = orgs
 
@@ -67,8 +73,8 @@ export default {
       theme.dark = !theme.dark
 
       const currentTheme = theme.dark
-        ? state.googleMapThemeDark
-        : state.googleMapThemeLight
+        ? state.interface.googleMapThemeDark
+        : state.interface.googleMapThemeLight
 
       state.googleInstance.then((props) => {
         props.map.setOptions({ styles: currentTheme })

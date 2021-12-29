@@ -1,34 +1,20 @@
 <template>
   <v-app>
     <v-navigation-drawer
-      v-model="leftDrawer"
+      :value="$store.state.interface.leftDrawer"
       fixed
       app
       class="left-drawer"
       width="340"
       mobile-breakpoint="768"
+      @input="setLeftDrawer()"
     >
       <div v-show="activeOrganization" class="pa-2">
-        <v-btn
-          fab
-          class="close-button close-button--active-organization"
-          @click="() => $store.commit('setActiveOrganization', null)"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
         <h1 v-if="activeOrganization">
           {{ activeOrganization.business_name }}
         </h1>
       </div>
       <div v-show="!activeOrganization" class="pa-2">
-        <v-btn
-          v-if="leftDrawer"
-          fab
-          class="close-button"
-          @click.stop="leftDrawer = !leftDrawer"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
         <img
           class="left-logo"
           src="@/assets/images/logo_without_name.png"
@@ -103,16 +89,12 @@
     <v-app-bar fixed app dense>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            @click="leftDrawer = !leftDrawer"
-            v-on="on"
-          >
+          <v-btn icon v-bind="attrs" @click="setLeftDrawer" v-on="on">
             <v-icon>mdi-filter</v-icon>
           </v-btn>
         </template>
-        {{ leftDrawer ? 'Hide' : 'Show' }} left filer panel
+        {{ $store.state.interface.leftDrawer ? 'Hide' : 'Show' }} left filer
+        panel
       </v-tooltip>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
@@ -177,7 +159,6 @@ export default {
   data() {
     return {
       clipped: false,
-      leftDrawer: null,
       rightDrawer: null,
       routesMenu,
     }
@@ -187,6 +168,13 @@ export default {
   },
   created() {
     this.$store.dispatch('getOrganizations')
+  },
+  methods: {
+    setLeftDrawer(value) {
+      if (this.leftDrawer !== value) {
+        this.$store.commit('setLeftDrawer')
+      }
+    },
   },
 }
 </script>
