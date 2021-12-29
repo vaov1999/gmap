@@ -5,7 +5,7 @@
       fixed
       app
       class="left-drawer"
-      width="300"
+      width="340"
       mobile-breakpoint="768"
     >
       <div v-show="activeOrganization" class="pa-2">
@@ -81,8 +81,14 @@
               <v-btn
                 v-bind="attrs"
                 class="pa-0"
-                v-on="on"
+                :class="{
+                  primary: $store.state.filter.categories.includes(
+                    category.name
+                  ),
+                }"
                 style="min-width: 1px"
+                v-on="on"
+                @click="$store.commit('setActiveCategories', category.name)"
               >
                 <v-icon dense> {{ category.icon }} </v-icon>
               </v-btn>
@@ -99,8 +105,8 @@
         <template #activator="{ on, attrs }">
           <v-btn
             icon
-            @click="leftDrawer = !leftDrawer"
             v-bind="attrs"
+            @click="leftDrawer = !leftDrawer"
             v-on="on"
           >
             <v-icon>mdi-filter</v-icon>

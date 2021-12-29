@@ -16,12 +16,16 @@
         v-for="(item, index) in $store.state.organizations"
         :key="index"
         class="card mt-5"
+        v-show="
+          $store.state.filter.categories.length === 0 ||
+          $store.state.filter.categories.includes(item.category.category[0])
+        "
       >
         <v-card-title
           style="cursor: pointer; line-height: 1.4rem"
-          @click="() => $store.commit('setActiveOrganization', index)"
-          v-text="item.business_name"
           class="text-subtitle-1 font-weight-bold"
+          @click="() => openOrganization(index)"
+          v-text="item.business_name"
         />
         <v-card-subtitle class="pb-0">
           <span class="success--text text-body-2 mr-2 mt-2">
@@ -108,6 +112,10 @@ export default {
           lng: Number(org.address.lng),
         })
       })
+    },
+    openOrganization(orgIndex) {
+      this.showOnMap(orgIndex)
+      this.$store.commit('setActiveOrganization', orgIndex)
     },
     defineCategory(category) {
       const categories = this.$store.state.categoriesOrganization

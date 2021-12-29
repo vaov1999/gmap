@@ -13,6 +13,9 @@ export default {
     categoriesOrganization,
     googleMapThemeDark,
     googleMapThemeLight,
+    filter: {
+      categories: [],
+    },
   }),
   mutations: {
     setOrganizations(state, orgs) {
@@ -70,6 +73,12 @@ export default {
       state.googleInstance.then((props) => {
         props.map.setOptions({ styles: currentTheme })
       })
+    },
+    setActiveCategories(state, name) {
+      const searchResult = state.filter.categories.indexOf(name)
+
+      if (searchResult === -1) state.filter.categories.push(name)
+      else state.filter.categories.splice(searchResult, 1)
     },
   },
   actions: {
