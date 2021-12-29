@@ -7,6 +7,8 @@ import {
 
 export default {
   state: () => ({
+    markers: [],
+    renderedOrganizations: [],
     organizations: null,
     activeOrganization: null,
     googleInstance: null,
@@ -25,7 +27,17 @@ export default {
       state.interface.leftDrawer = !state.interface.leftDrawer
     },
     setOrganizations(state, orgs) {
-      state.organizations = orgs
+      const orgsWithIternalProperties = orgs.map((i) => {
+        return { ...i, iternal: { isEqualFilter: true, isRendered: false } }
+      })
+
+      state.organizations = orgsWithIternalProperties
+      // this.commit('setRenderedOrganizations')
+    },
+    setRenderedOrganizations(state) {
+      // const filteredOrgs = state.organizations.filter((i) => {
+      //   if (!i.iternal.isRendered) return true
+      // })
     },
     setActiveOrganization(state, organizationId) {
       if (organizationId === null) {
@@ -50,6 +62,8 @@ export default {
         })
         .then((props) => {
           const { google, map } = props
+          const markers = []
+
           state.organizations.forEach((org, index) => {
             const marker = new google.maps.Marker({
               position: {
@@ -58,12 +72,16 @@ export default {
               },
               map,
               title: org.business_name,
+              categories: org.category.category,
             })
 
             marker.addListener('click', () => {
               this.commit('setActiveOrganization', index)
             })
+            markers.push(marker)
           })
+
+          return { google, map, markers }
         })
     },
     setAppTheme(state) {
@@ -78,11 +96,27 @@ export default {
         props.map.setOptions({ styles: currentTheme })
       })
     },
-    setActiveCategories(state, name) {
-      const searchResult = state.filter.categories.indexOf(name)
+    setActiveCategories(state, category) {
+      const equalCategoryIndex = state.filter.categories.indexOf(category)
 
-      if (searchResult === -1) state.filter.categories.push(name)
-      else state.filter.categories.splice(searchResult, 1)
+      if (equalCategoryIndex === -1) {
+        state.filter.categories.push(category)
+      } else {
+        state.filter.categories.splice(equalCategoryIndex, 1)
+      }
+
+      state.googleInstance.then(function ({ google, map, markers }) {
+        markers.forEach((i) => {
+          if (
+            state.filter.categories.length === 0 ||
+            state.filter.categories.includes(i.categories[0])
+          ) {
+            i.setVisible(true)
+          } else {
+            i.setVisible(false)
+          }
+        })
+      })
     },
   },
   actions: {

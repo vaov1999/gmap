@@ -14,12 +14,12 @@
     <template v-else>
       <v-card
         v-for="(item, index) in $store.state.organizations"
-        :key="index"
-        class="card mt-5"
         v-show="
           $store.state.filter.categories.length === 0 ||
           $store.state.filter.categories.includes(item.category.category[0])
         "
+        :key="index"
+        class="card mt-5"
       >
         <v-card-title
           style="cursor: pointer; line-height: 1.4rem"
