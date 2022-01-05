@@ -10,6 +10,9 @@
       @input="setLeftDrawer()"
     >
       <div v-show="activeOrganization" class="pa-2">
+        <v-btn @click="$store.commit('setActiveOrganization', null)">
+          CLOSE
+        </v-btn>
         <h1 v-if="activeOrganization">
           {{ activeOrganization.business_name }}
         </h1>
@@ -65,6 +68,7 @@
           >
             <template #activator="{ on, attrs }">
               <v-btn
+                :disabled="$store.state.filter.searchString.length > 0"
                 v-bind="attrs"
                 class="pa-0"
                 :class="{
@@ -116,6 +120,7 @@
         append-icon="mdi-magnify"
         placeholder="Search your place"
         class="ma-7 ma-sm-2"
+        @input="search"
       />
       <v-app-bar-nav-icon @click.stop="rightDrawer = !rightDrawer" />
     </v-app-bar>
@@ -161,6 +166,7 @@ export default {
       clipped: false,
       rightDrawer: null,
       routesMenu,
+      searchDelayTimer: null,
     }
   },
   computed: {
@@ -171,6 +177,13 @@ export default {
       if (this.leftDrawer !== value) {
         this.$store.commit('setLeftDrawer')
       }
+    },
+    search(event) {
+      clearTimeout(this.searchDelayTimer)
+      const vm = this
+      this.searchDelayTimer = setTimeout(function () {
+        vm.$store.commit('setSearchString', event.trim().toLowerCase())
+      }, 1000)
     },
   },
 }

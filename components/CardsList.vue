@@ -14,10 +14,7 @@
     <template v-else>
       <v-card
         v-for="(item, index) in $store.state.organizations"
-        v-show="
-          $store.state.filter.categories.length === 0 ||
-          $store.state.filter.categories.includes(item.category.category[0])
-        "
+        v-show="item.iternal.isVisibleCard"
         :key="index"
         class="card mt-5"
       >

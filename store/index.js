@@ -1,8 +1,8 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import {
+  categoriesOrganization,
   googleMapThemeDark,
   googleMapThemeLight,
-  categoriesOrganization,
 } from '~/assets/constants.js'
 
 export default {
@@ -14,6 +14,7 @@ export default {
     googleInstance: null,
     categoriesOrganization,
     filter: {
+      searchString: '',
       categories: [],
     },
     interface: {
@@ -23,21 +24,29 @@ export default {
     },
   }),
   mutations: {
+    setSearchString(state, str) {
+      state.filter.searchString = str
+
+      state.organizations.forEach((i) => {
+        i.iternal.isVisibleCard = i.business_name
+          .toLocaleLowerCase()
+          .includes(str)
+      })
+    },
     setLeftDrawer(state) {
       state.interface.leftDrawer = !state.interface.leftDrawer
     },
     setOrganizations(state, orgs) {
-      const orgsWithIternalProperties = orgs.map((i) => {
-        return { ...i, iternal: { isEqualFilter: true, isRendered: false } }
+      state.organizations = orgs.map((i) => {
+        return {
+          ...i,
+          iternal: {
+            isVisibleCard: true,
+            isEqualCategory: true,
+            isRendered: false,
+          },
+        }
       })
-
-      state.organizations = orgsWithIternalProperties
-      // this.commit('setRenderedOrganizations')
-    },
-    setRenderedOrganizations(state) {
-      // const filteredOrgs = state.organizations.filter((i) => {
-      //   if (!i.iternal.isRendered) return true
-      // })
     },
     setActiveOrganization(state, organizationId) {
       if (organizationId === null) {
@@ -56,7 +65,7 @@ export default {
           const map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: 35.2067563, lng: -111.6066842 },
             zoom: 9,
-            styles: state.googleMapThemeLight,
+            styles: state.interface.googleMapThemeLight,
           })
           return { google, map }
         })
@@ -105,12 +114,16 @@ export default {
         state.filter.categories.splice(equalCategoryIndex, 1)
       }
 
-      state.googleInstance.then(function ({ google, map, markers }) {
-        markers.forEach((i) => {
-          if (
-            state.filter.categories.length === 0 ||
-            state.filter.categories.includes(i.categories[0])
-          ) {
+      state.organizations.forEach((i) => {
+        i.iternal.isVisibleCard =
+          !state.filter.searchString.length &&
+          (!state.filter.categories.length ||
+            state.filter.categories.includes(i.category.category[0]))
+      })
+
+      state.googleInstance.then(function ({ markers }) {
+        markers.forEach((i, index) => {
+          if (state.organizations[index].iternal.isVisibleCard) {
             i.setVisible(true)
           } else {
             i.setVisible(false)
