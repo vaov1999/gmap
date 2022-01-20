@@ -17,78 +17,78 @@
           {{ activeOrganization.business_name }}
         </h1>
       </div>
-      <div v-show="!activeOrganization" class="pa-2">
-        <img
-          class="left-logo"
-          src="@/assets/images/logo_without_name.png"
-          alt=""
-        />
-        <div
-          class="mt-3"
-          style="display: grid; grid-template-columns: 1fr auto; grid-gap: 15px"
-        >
-          <v-btn block class="gb-button-wrap text-caption">
-            <v-icon left> mdi-phone </v-icon>
-            Need assistance call <br />
-            928-832-2324
-          </v-btn>
-          <v-btn height="100%" min-width="0">
-            <v-icon dense> mdi-content-copy </v-icon>
-          </v-btn>
-        </div>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-gap: 15px;
-          "
-          class="mt-3 mb-3"
-        >
-          <v-btn height="100%" class="text-caption">
-            <v-icon left dense> mdi-filter </v-icon>
-            Filter
-          </v-btn>
-          <v-btn class="gb-button-wrap text-caption">
-            <v-icon left dense>mdi-timer</v-icon>
-            Show opened only
-          </v-btn>
-        </div>
-        <p class="text-subtitle-2 mt-5 mb-1">Show only:</p>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: auto auto auto auto auto;
-            grid-gap: 15px;
-          "
-        >
-          <v-tooltip
-            v-for="(category, index) in categoriesOrganization"
-            :key="index"
-            bottom
-          >
-            <template #activator="{ on, attrs }">
-              <v-btn
-                :disabled="$store.state.filter.searchString.length > 0"
-                v-bind="attrs"
-                class="pa-0"
-                :class="{
-                  primary: $store.state.filter.categories.includes(
-                    category.name
-                  ),
-                }"
-                style="min-width: 1px"
-                v-on="on"
-                @click="$store.commit('setActiveCategories', category.name)"
-              >
-                <v-icon dense> {{ category.icon }} </v-icon>
-              </v-btn>
-            </template>
-            Search for local {{ category.name }} organizations
-          </v-tooltip>
-        </div>
-        <p class="text-subtitle-2 mt-5 mb-0">Business list:</p>
-        <CardsList></CardsList>
-      </div>
+<!--      <div v-show="!activeOrganization" class="pa-2">-->
+<!--        <img-->
+<!--          class="left-logo"-->
+<!--          src="@/assets/images/logo_without_name.png"-->
+<!--          alt=""-->
+<!--        />-->
+<!--        <div-->
+<!--          class="mt-3"-->
+<!--          style="display: grid; grid-template-columns: 1fr auto; grid-gap: 15px"-->
+<!--        >-->
+<!--          <v-btn block class="gb-button-wrap text-caption">-->
+<!--            <v-icon left> mdi-phone </v-icon>-->
+<!--            Need assistance call <br />-->
+<!--            928-832-2324-->
+<!--          </v-btn>-->
+<!--          <v-btn height="100%" min-width="0">-->
+<!--            <v-icon dense> mdi-content-copy </v-icon>-->
+<!--          </v-btn>-->
+<!--        </div>-->
+<!--        <div-->
+<!--          style="-->
+<!--            display: grid;-->
+<!--            grid-template-columns: auto auto;-->
+<!--            grid-gap: 15px;-->
+<!--          "-->
+<!--          class="mt-3 mb-3"-->
+<!--        >-->
+<!--          <v-btn height="100%" class="text-caption">-->
+<!--            <v-icon left dense> mdi-filter </v-icon>-->
+<!--            Filter-->
+<!--          </v-btn>-->
+<!--          <v-btn class="gb-button-wrap text-caption">-->
+<!--            <v-icon left dense>mdi-timer</v-icon>-->
+<!--            Show opened only-->
+<!--          </v-btn>-->
+<!--        </div>-->
+<!--        <p class="text-subtitle-2 mt-5 mb-1">Show only:</p>-->
+<!--        <div-->
+<!--          style="-->
+<!--            display: grid;-->
+<!--            grid-template-columns: auto auto auto auto auto;-->
+<!--            grid-gap: 15px;-->
+<!--          "-->
+<!--        >-->
+<!--          <v-tooltip-->
+<!--            v-for="(category, index) in categoriesOrganization"-->
+<!--            :key="index"-->
+<!--            bottom-->
+<!--          >-->
+<!--            <template #activator="{ on, attrs }">-->
+<!--              <v-btn-->
+<!--                :disabled="$store.state.filter.searchString.length > 0"-->
+<!--                v-bind="attrs"-->
+<!--                class="pa-0"-->
+<!--                :class="{-->
+<!--                  primary: $store.state.filter.categories.includes(-->
+<!--                    category.name-->
+<!--                  ),-->
+<!--                }"-->
+<!--                style="min-width: 1px"-->
+<!--                v-on="on"-->
+<!--                @click="$store.commit('setActiveCategories', category.name)"-->
+<!--              >-->
+<!--                <v-icon dense> {{ category.icon }} </v-icon>-->
+<!--              </v-btn>-->
+<!--            </template>-->
+<!--            Search for local {{ category.name }} organizations-->
+<!--          </v-tooltip>-->
+<!--        </div>-->
+<!--        <p class="text-subtitle-2 mt-5 mb-0">Business list:</p>-->
+<!--        <CardsList></CardsList>-->
+<!--      </div>-->
     </v-navigation-drawer>
     <v-app-bar fixed app dense>
       <v-tooltip bottom>

@@ -39,16 +39,24 @@ export default {
       state.interface.leftDrawer = !state.interface.leftDrawer
     },
     setOrganizations(state, orgs) {
-      state.organizations = orgs.map((i) => {
-        return {
-          ...i,
-          iternal: {
-            isVisibleCard: true,
-            isEqualCategory: true,
-            isRendered: false,
-          },
-        }
-      })
+      const orgsMultiple = []
+      let count = 0
+      while (count < 10) {
+        count++
+        orgsMultiple.push(...orgs)
+      }
+      state.organizations = orgsMultiple
+      console.log('orgs.length', orgsMultiple.length)
+      // state.organizations = orgs.map((i) => {
+      //   return {
+      //     ...i,
+      //     iternal: {
+      //       isVisibleCard: true,
+      //       isEqualCategory: true,
+      //       isRendered: false,
+      //     },
+      //   }
+      // })
     },
     setActiveOrganization(state, organizationId) {
       if (organizationId === null) {
