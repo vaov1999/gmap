@@ -1,0 +1,13 @@
+.gb-button-wrap {
+  height: auto !important;
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+  .v-btn__content {
+    white-space: normal !important;
+    flex: auto !important;
+  }
+}
+
+* {
+  word-break: break-word !important;
+}
